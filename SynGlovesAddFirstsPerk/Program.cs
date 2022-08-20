@@ -83,6 +83,51 @@ namespace SynGlovesAddFirstsPerk
                     }
                 }
             }
+            // search for mod specific
+            foreach (var modGetter in state.LoadOrder)
+            {
+                if (modGetter.Value == null) continue;
+                if (modGetter.Value.Mod == null) continue;
+
+                bool isSearchMaterial = ModSpecificMaterialKeywordsSearch.ContainsKey(modGetter.Value.ModKey);
+                bool isSearchFists = ModSpecificFistsKeywordsSearch.ContainsKey(modGetter.Value.ModKey);
+                if (isSearchMaterial || isSearchFists)
+                {
+                    Dictionary<string, List<MaterialFistsKeywordsData>>? matList = isSearchMaterial ? ModSpecificMaterialKeywordsSearch[modGetter.Value.ModKey] : null;
+                    Dictionary<string, List<MaterialFistsKeywordsData>>? fList = isSearchFists ? ModSpecificFistsKeywordsSearch[modGetter.Value.ModKey] : null;
+                    foreach (var keyWordGetter in modGetter.Value.Mod.Keywords)
+                    {
+                        if (string.IsNullOrWhiteSpace(keyWordGetter.EditorID)) continue;
+
+                        if (isSearchMaterial && matList!.ContainsKey(keyWordGetter.EditorID))
+                        {
+                            var list = matList[keyWordGetter.EditorID];
+                            foreach (var d in list)
+                            {
+                                // set value and remove reference from search list
+                                d.MaterialKeyword = keyWordGetter.FormKey;
+                                list.Remove(d);
+                            }
+
+                            // remove empty list reference
+                            if (list.Count == 0) matList.Remove(keyWordGetter.EditorID);
+                        }
+                        if (isSearchFists && fList!.ContainsKey(keyWordGetter.EditorID))
+                        {
+                            var list = fList[keyWordGetter.EditorID];
+                            foreach (var d in list)
+                            {
+                                // set value and remove reference from search list
+                                d.MaterialKeyword = keyWordGetter.FormKey;
+                                list.Remove(d);
+                            }
+
+                            // remove empty list reference
+                            if (list.Count == 0) fList.Remove(keyWordGetter.EditorID);
+                        }
+                    }
+                }
+            }
 
             int patchedCount = 0;
             foreach (var itemGetter in state.LoadOrder.PriorityOrder.Armor().WinningOverrides())
