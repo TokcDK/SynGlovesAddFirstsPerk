@@ -141,7 +141,7 @@ namespace SynGlovesAddFirstsPerk
             bool isMatSearch = MaterialKeywordsSearch.Any(d => d.Value.Any(v => v.MaterialKeyword == null));
             bool isFSearch = FistsKeywordsSearch.Any(d => d.Value.Any(v => v.FistsKeyword == null));
 
-            if(isMatSearch || isFSearch)
+            if (isMatSearch || isFSearch)
             {
                 foreach (var itemGetter in state.LoadOrder.PriorityOrder.Keyword().WinningOverrides())
                 {
@@ -180,14 +180,21 @@ namespace SynGlovesAddFirstsPerk
                 }
             }
             // get valid list
-            HashSet<MaterialFistsKeywordsData>? modMaterialFistsList = new();
-            foreach(var data in Settings.Value.ModMaterialFists)
+            Dictionary<FormLink<IKeywordGetter>, List<MaterialFistsKeywordsData>>? modMaterialFistsList = new();
+            foreach (var data in Settings.Value.ModMaterialFists)
             {
                 if (data.MaterialKeyword == null || data.FistsKeyword == null) continue;
 
-                modMaterialFistsList.Add(data);
+                if (modMaterialFistsList.ContainsKey(data.MaterialKeyword)) modMaterialFistsList[data.MaterialKeyword].Add(data); else modMaterialFistsList.Add(data.MaterialKeyword, new List<MaterialFistsKeywordsData>() { data });
             }
-            // set result list by armor type
+            // order by priority
+            List<FormLink<IKeywordGetter>> keys = new(modMaterialFistsList.Keys);
+            foreach (var key in keys)
+            {
+                var list = modMaterialFistsList[key];
+                list = list.OrderByDescending(d => d.Priority).ToList();
+            }
+            modMaterialFistsList = modMaterialFistsList.OrderByDescending(d => d.Value[0].Priority).ToDictionary(k => k.Key, v => v.Value);
 
             int patchedCount = 0;
             foreach (var itemGetter in state.LoadOrder.PriorityOrder.Armor().WinningOverrides())
