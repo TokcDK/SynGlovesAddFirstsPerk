@@ -187,6 +187,7 @@ namespace SynGlovesAddFirstsPerk
 
                 modMaterialFistsList.Add(data);
             }
+            // set result list by armor type
 
             int patchedCount = 0;
             foreach (var itemGetter in state.LoadOrder.PriorityOrder.Armor().WinningOverrides())
