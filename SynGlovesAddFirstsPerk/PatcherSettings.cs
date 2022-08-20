@@ -268,6 +268,12 @@ namespace SynGlovesAddFirstsPerk
             },
             new MaterialFistsKeywordsData()
             {
+                 MaterialKeyword=Mutagen.Bethesda.FormKeys.SkyrimSE.Update.Keyword.ArmorMaterialBearStormcloak,
+                 FistsKeywordStringOptional = new KeywordSearchData(){ KeywordString = "WAF_PerkFists07" },
+                 ArmorTypeToSetFor = ArmorType.LightArmor,
+            },
+            new MaterialFistsKeywordsData()
+            {
                  MaterialKeyword=Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialImperialLight,
                  FistsKeywordStringOptional = new KeywordSearchData(){ KeywordString = "WAF_PerkFists07" },
                  ArmorTypeToSetFor = ArmorType.LightArmor,
