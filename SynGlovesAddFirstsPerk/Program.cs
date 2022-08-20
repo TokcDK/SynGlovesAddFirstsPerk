@@ -43,7 +43,7 @@ namespace SynGlovesAddFirstsPerk
             Dictionary<string, List<MaterialFistsKeywordsData>> FistsKeywordsSearch = new();
             foreach(var data in Settings.Value.ModMaterialFists)
             {
-                if (data.MaterialKeyword==null && !string.IsNullOrWhiteSpace(data.MaterialKeywordStringOptional.KeywordString))
+                if (data.MaterialKeyword==null)
                 {
                     if (data.MaterialKeywordStringOptional.ModToSearchOptional != default)
                     {
@@ -51,7 +51,7 @@ namespace SynGlovesAddFirstsPerk
                     }
                     else MaterialKeywordsSearch.TryAdd(data);
                 }
-                if (data.FistsKeyword==null && !string.IsNullOrWhiteSpace(data.FistsKeywordStringOptional.KeywordString))
+                if (data.FistsKeyword==null)
                 {
                     if (data.MaterialKeywordStringOptional.ModToSearchOptional != default)
                     {
