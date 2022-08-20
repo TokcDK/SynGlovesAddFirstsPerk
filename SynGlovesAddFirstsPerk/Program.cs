@@ -197,7 +197,7 @@ namespace SynGlovesAddFirstsPerk
             modMaterialFistsList = modMaterialFistsList.OrderByDescending(d => d.Value[0].Priority).ToDictionary(k => k.Key, v => v.Value);
 
             HashSet<FormLink<IKeywordGetter>> fistsKeywords = new();
-            foreach(var d in modMaterialFistsList) foreach (var v in d.Value) if (!fistsKeywords.Contains(v.FistsKeyword!)) fistsKeywords.Add(v.FistsKeyword!);
+            foreach (var d in modMaterialFistsList) foreach (var v in d.Value) if (!fistsKeywords.Contains(v.FistsKeyword!)) fistsKeywords.Add(v.FistsKeyword!);
 
             int patchedCount = 0;
             foreach (var itemGetter in state.LoadOrder.PriorityOrder.Armor().WinningOverrides())
@@ -232,7 +232,7 @@ namespace SynGlovesAddFirstsPerk
                         var l = modMaterialFistsList[keyword.FormKey];
                         foreach (var d in l)
                         {
-                            if (d.ArmorTypeToSetFor == null || itemGetter.BodyTemplate.ArmorType == d.ArmorTypeToSetFor)
+                            if (d.ArmorTypeToSetFor == ArmorType.Clothing || itemGetter.BodyTemplate.ArmorType == d.ArmorTypeToSetFor)
                             {
                                 foundFormKey = d.FistsKeyword;
                                 break;

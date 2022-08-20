@@ -21,7 +21,7 @@ namespace SynGlovesAddFirstsPerk
         public int Priority = 0;
         [SynthesisOrder]
         [SynthesisTooltip("Type of armor where to search for keywords\nSometimes different armor types contains same maeterial keyword but fists keyword must be different")]
-        public ArmorType? ArmorTypeToSetFor;
+        public ArmorType ArmorTypeToSetFor = ArmorType.Clothing;
         [SynthesisOrder]
         [SynthesisTooltip("Material keyword")]
         public FormLink<IKeywordGetter>? MaterialKeyword;
@@ -45,78 +45,78 @@ namespace SynGlovesAddFirstsPerk
 #region heavy armor keywords
             new MaterialFistsKeywordsData()
             {
-                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialDaedric.FormKey,
-                 FistsKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsDaedric.FormKey,
+                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialDaedric,
+                 FistsKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsDaedric,
                  ArmorTypeToSetFor = ArmorType.HeavyArmor,
                  Priority = 100,
             },
             new MaterialFistsKeywordsData()
             {
-                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialDragonplate.FormKey,
-                 FistsKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsDragonplate.FormKey,
+                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialDragonplate,
+                 FistsKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsDragonplate,
                  ArmorTypeToSetFor = ArmorType.HeavyArmor,
                  Priority = 100,
             },
             new MaterialFistsKeywordsData()
             {
-                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialEbony.FormKey,
-                 FistsKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsEbony.FormKey,
+                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialEbony,
+                 FistsKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsEbony,
                  ArmorTypeToSetFor = ArmorType.HeavyArmor,
                  Priority = 90,
             },
             new MaterialFistsKeywordsData()
             {
-                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialOrcish.FormKey,
-                 FistsKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsOrcish.FormKey,
+                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialOrcish,
+                 FistsKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsOrcish,
                  ArmorTypeToSetFor = ArmorType.HeavyArmor,
                  Priority = 80,
             },
             new MaterialFistsKeywordsData()
             {
-                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialImperialHeavy.FormKey,
-                 FistsKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsSteelPlate.FormKey,
+                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialImperialHeavy,
+                 FistsKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsSteelPlate,
                  ArmorTypeToSetFor = ArmorType.HeavyArmor,
                  Priority = 70,
             },
             new MaterialFistsKeywordsData()
             {
-                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Update.Keyword.ArmorMaterialBlades.FormKey,
-                 FistsKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsSteelPlate.FormKey,
+                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Update.Keyword.ArmorMaterialBlades,
+                 FistsKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsSteelPlate,
                  ArmorTypeToSetFor = ArmorType.HeavyArmor,
                  Priority = 70,
             },
             new MaterialFistsKeywordsData()
             {
-                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialSteelPlate.FormKey,
-                 FistsKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsSteelPlate.FormKey,
+                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialSteelPlate,
+                 FistsKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsSteelPlate,
                  ArmorTypeToSetFor = ArmorType.HeavyArmor,
                  Priority = 70,
             },
             new MaterialFistsKeywordsData()
             {
-                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialDwarven.FormKey,
-                 FistsKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsDwarven.FormKey,
+                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialDwarven,
+                 FistsKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsDwarven,
                  ArmorTypeToSetFor = ArmorType.HeavyArmor,
                  Priority = 60,
             },
             new MaterialFistsKeywordsData()
             {
-                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.WeapMaterialSilver.FormKey,
-                 FistsKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsSteel.FormKey,
+                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.WeapMaterialSilver,
+                 FistsKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsSteel,
                  ArmorTypeToSetFor = ArmorType.HeavyArmor,
                  Priority = 50,
             },
             new MaterialFistsKeywordsData()
             {
-                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialSteel.FormKey,
-                 FistsKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsSteel.FormKey,
+                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialSteel,
+                 FistsKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsSteel,
                  ArmorTypeToSetFor = ArmorType.HeavyArmor,
                  Priority = 50,
             },
             new MaterialFistsKeywordsData()
             {
-                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialIron.FormKey,
-                 FistsKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsIron.FormKey,
+                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialIron,
+                 FistsKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsIron,
                  ArmorTypeToSetFor = ArmorType.HeavyArmor,
                  Priority = 40,
             },
@@ -125,84 +125,84 @@ namespace SynGlovesAddFirstsPerk
 #region light armor keywords for heavy armors material keywords
             new MaterialFistsKeywordsData()
             {
-                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialDaedric.FormKey,
+                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialDaedric,
                  FistsKeywordStringOptional = new KeywordSearchData(){ KeywordString = "WAF_PerkFists12" },
                  ArmorTypeToSetFor = ArmorType.LightArmor,
                  Priority = 100,
             },
             new MaterialFistsKeywordsData()
             {
-                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialDragonplate.FormKey,
+                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialDragonplate,
                  FistsKeywordStringOptional = new KeywordSearchData(){ KeywordString = "WAF_PerkFists12" },
                  ArmorTypeToSetFor = ArmorType.LightArmor,
                  Priority = 100,
             },
             new MaterialFistsKeywordsData()
             {
-                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialEbony.FormKey,
+                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialEbony,
                  FistsKeywordStringOptional = new KeywordSearchData(){ KeywordString = "WAF_PerkFists11" },
                  ArmorTypeToSetFor = ArmorType.LightArmor,
                  Priority = 90,
             },
             new MaterialFistsKeywordsData()
             {
-                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialOrcish.FormKey,
+                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialOrcish,
                  FistsKeywordStringOptional = new KeywordSearchData(){ KeywordString = "WAF_PerkFists10" },
                  ArmorTypeToSetFor = ArmorType.LightArmor,
                  Priority = 80,
             },
             new MaterialFistsKeywordsData()
             {
-                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Dragonborn.Keyword.DLC2ArmorMaterialNordicHeavy.FormKey,
+                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Dragonborn.Keyword.DLC2ArmorMaterialNordicHeavy,
                  FistsKeywordStringOptional = new KeywordSearchData(){ KeywordString = "WAF_PerkFists10" },
                  ArmorTypeToSetFor = ArmorType.LightArmor,
                  Priority = 80,
             },
             new MaterialFistsKeywordsData()
             {
-                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialImperialHeavy.FormKey,
+                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialImperialHeavy,
                  FistsKeywordStringOptional = new KeywordSearchData(){ KeywordString = "WAF_PerkFists09" },
                  ArmorTypeToSetFor = ArmorType.LightArmor,
                  Priority = 70,
             },
             new MaterialFistsKeywordsData()
             {
-                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Update.Keyword.ArmorMaterialBlades.FormKey,
+                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Update.Keyword.ArmorMaterialBlades,
                  FistsKeywordStringOptional = new KeywordSearchData(){ KeywordString = "WAF_PerkFists09" },
                  ArmorTypeToSetFor = ArmorType.LightArmor,
                  Priority = 70,
             },
             new MaterialFistsKeywordsData()
             {
-                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialSteelPlate.FormKey,
+                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialSteelPlate,
                  FistsKeywordStringOptional = new KeywordSearchData(){ KeywordString = "WAF_PerkFists09" },
                  ArmorTypeToSetFor = ArmorType.LightArmor,
                  Priority = 70,
             },
             new MaterialFistsKeywordsData()
             {
-                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialDwarven.FormKey,
+                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialDwarven,
                  FistsKeywordStringOptional = new KeywordSearchData(){ KeywordString = "WAF_PerkFists08" },
                  ArmorTypeToSetFor = ArmorType.LightArmor,
                  Priority = 60,
             },
             new MaterialFistsKeywordsData()
             {
-                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.WeapMaterialSilver.FormKey,
+                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.WeapMaterialSilver,
                  FistsKeywordStringOptional = new KeywordSearchData(){ KeywordString = "WAF_PerkFists07" },
                  ArmorTypeToSetFor = ArmorType.LightArmor,
                  Priority = 50,
             },
             new MaterialFistsKeywordsData()
             {
-                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialSteel.FormKey,
+                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialSteel,
                  FistsKeywordStringOptional = new KeywordSearchData(){ KeywordString = "WAF_PerkFists07" },
                  ArmorTypeToSetFor = ArmorType.LightArmor,
                  Priority = 50,
             },
             new MaterialFistsKeywordsData()
             {
-                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialIron.FormKey,
+                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialIron,
                  FistsKeywordStringOptional = new KeywordSearchData(){ KeywordString = "WAF_PerkFists06" },
                  ArmorTypeToSetFor = ArmorType.LightArmor,
                  Priority = 40,
