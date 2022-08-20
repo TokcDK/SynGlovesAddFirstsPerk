@@ -32,5 +32,10 @@ namespace SynGlovesAddFirstsPerk
             }
             else list.Add(data.MaterialKeywordStringOptional.KeywordString, new List<MaterialFistsKeywordsData>() { data });
         }
+        internal static void TryAddTo(this MaterialFistsKeywordsData data, Dictionary<string, List<MaterialFistsKeywordsData>> list, Dictionary<ModKey, Dictionary<string, List<MaterialFistsKeywordsData>>> modSpecificList, bool isMaterial)
+        {
+            if (isMaterial && data.MaterialKeyword == null) if (data.MaterialKeywordStringOptional.ModToSearchOptional != default) modSpecificList.TryAdd(data); else list.TryAdd(data);
+            if (!isMaterial && data.FistsKeyword == null) if (data.MaterialKeywordStringOptional.ModToSearchOptional != default) modSpecificList.TryAdd(data); else list.TryAdd(data);
+        }
     }
 }

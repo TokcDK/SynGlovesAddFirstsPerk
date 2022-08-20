@@ -41,29 +41,15 @@ namespace SynGlovesAddFirstsPerk
             Dictionary<ModKey, Dictionary<string, List<MaterialFistsKeywordsData>>> ModSpecificFistsKeywordsSearch = new();
             Dictionary<string, List<MaterialFistsKeywordsData>> MaterialKeywordsSearch = new();
             Dictionary<string, List<MaterialFistsKeywordsData>> FistsKeywordsSearch = new();
-            foreach(var data in Settings.Value.ModMaterialFists)
+            foreach (var data in Settings.Value.ModMaterialFists)
             {
-                if (data.MaterialKeyword==null)
-                {
-                    if (data.MaterialKeywordStringOptional.ModToSearchOptional != default)
-                    {
-                        ModSpecificMaterialKeywordsSearch.TryAdd(data);
-                    }
-                    else MaterialKeywordsSearch.TryAdd(data);
-                }
-                if (data.FistsKeyword==null)
-                {
-                    if (data.MaterialKeywordStringOptional.ModToSearchOptional != default)
-                    {
-                        ModSpecificFistsKeywordsSearch.TryAdd(data);
-                    }
-                    else FistsKeywordsSearch.TryAdd(data);
-                }
+                data.TryAddTo(MaterialKeywordsSearch, ModSpecificMaterialKeywordsSearch, true);
+                data.TryAddTo(FistsKeywordsSearch, ModSpecificFistsKeywordsSearch, false);
             }
             // search in settings keywords
             foreach (var data in Settings.Value.ModMaterialFists)
             {
-                if(data.MaterialKeyword != null && data.MaterialKeyword.TryResolve(state.LinkCache, out var mKeywordGetter) && !string.IsNullOrWhiteSpace(mKeywordGetter.EditorID))
+                if (data.MaterialKeyword != null && data.MaterialKeyword.TryResolve(state.LinkCache, out var mKeywordGetter) && !string.IsNullOrWhiteSpace(mKeywordGetter.EditorID))
                 {
                     if (MaterialKeywordsSearch.ContainsKey(mKeywordGetter.EditorID))
                     {
@@ -80,7 +66,7 @@ namespace SynGlovesAddFirstsPerk
                     }
                 }
 
-                if(data.FistsKeyword != null && data.FistsKeyword.TryResolve(state.LinkCache, out var fKeywordGetter) && !string.IsNullOrWhiteSpace(fKeywordGetter.EditorID))
+                if (data.FistsKeyword != null && data.FistsKeyword.TryResolve(state.LinkCache, out var fKeywordGetter) && !string.IsNullOrWhiteSpace(fKeywordGetter.EditorID))
                 {
                     if (FistsKeywordsSearch.ContainsKey(fKeywordGetter.EditorID))
                     {
