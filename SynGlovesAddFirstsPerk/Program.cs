@@ -46,6 +46,7 @@ namespace SynGlovesAddFirstsPerk
                 data.TryAddTo(MaterialKeywordsSearch, ModSpecificMaterialKeywordsSearch, true);
                 data.TryAddTo(FistsKeywordsSearch, ModSpecificFistsKeywordsSearch, false);
             }
+
             // search in settings keywords
             foreach (var data in Settings.Value.ModMaterialFists)
             {
@@ -177,6 +178,14 @@ namespace SynGlovesAddFirstsPerk
                         if (list.Count == 0) FistsKeywordsSearch.Remove(itemGetter.EditorID);
                     }
                 }
+            }
+            // get valid list
+            HashSet<MaterialFistsKeywordsData>? modMaterialFistsList = new();
+            foreach(var data in Settings.Value.ModMaterialFists)
+            {
+                if (data.MaterialKeyword == null || data.FistsKeyword == null) continue;
+
+                modMaterialFistsList.Add(data);
             }
 
             int patchedCount = 0;
