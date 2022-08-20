@@ -108,6 +108,80 @@ namespace SynGlovesAddFirstsPerk
             },
 #endregion
 #region light armor keywords
+#region light armor keywords for heavy armors material keywords
+            new MaterialFistsKeywordsData()
+            {
+                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialDaedric.FormKey,
+                 FistsKeywordStringOptional = new KeywordSearchData(){ KeywordString = "WAF_PerkFists12" },
+                 ArmorTypeToSetFor = ArmorType.LightArmor,
+            },
+            new MaterialFistsKeywordsData()
+            {
+                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialDragonplate.FormKey,
+                 FistsKeywordStringOptional = new KeywordSearchData(){ KeywordString = "WAF_PerkFists12" },
+                 ArmorTypeToSetFor = ArmorType.LightArmor,
+            },
+            new MaterialFistsKeywordsData()
+            {
+                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialEbony.FormKey,
+                 FistsKeywordStringOptional = new KeywordSearchData(){ KeywordString = "WAF_PerkFists11" },
+                 ArmorTypeToSetFor = ArmorType.LightArmor,
+            },
+            new MaterialFistsKeywordsData()
+            {
+                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialOrcish.FormKey,
+                 FistsKeywordStringOptional = new KeywordSearchData(){ KeywordString = "WAF_PerkFists10" },
+                 ArmorTypeToSetFor = ArmorType.LightArmor,
+            },
+            new MaterialFistsKeywordsData()
+            {
+                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Dragonborn.Keyword.DLC2ArmorMaterialNordicHeavy.FormKey,
+                 FistsKeywordStringOptional = new KeywordSearchData(){ KeywordString = "WAF_PerkFists10" },
+                 ArmorTypeToSetFor = ArmorType.LightArmor,
+            },
+            new MaterialFistsKeywordsData()
+            {
+                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialImperialHeavy.FormKey,
+                 FistsKeywordStringOptional = new KeywordSearchData(){ KeywordString = "WAF_PerkFists09" },
+                 ArmorTypeToSetFor = ArmorType.LightArmor,
+            },
+            new MaterialFistsKeywordsData()
+            {
+                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Update.Keyword.ArmorMaterialBlades.FormKey,
+                 FistsKeywordStringOptional = new KeywordSearchData(){ KeywordString = "WAF_PerkFists09" },
+                 ArmorTypeToSetFor = ArmorType.LightArmor,
+            },
+            new MaterialFistsKeywordsData()
+            {
+                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialSteelPlate.FormKey,
+                 FistsKeywordStringOptional = new KeywordSearchData(){ KeywordString = "WAF_PerkFists09" },
+                 ArmorTypeToSetFor = ArmorType.LightArmor,
+            },
+            new MaterialFistsKeywordsData()
+            {
+                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialDwarven.FormKey,
+                 FistsKeywordStringOptional = new KeywordSearchData(){ KeywordString = "WAF_PerkFists08" },
+                 ArmorTypeToSetFor = ArmorType.LightArmor,
+            },
+            new MaterialFistsKeywordsData()
+            {
+                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.WeapMaterialSilver.FormKey,
+                 FistsKeywordStringOptional = new KeywordSearchData(){ KeywordString = "WAF_PerkFists07" },
+                 ArmorTypeToSetFor = ArmorType.LightArmor,
+            },
+            new MaterialFistsKeywordsData()
+            {
+                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialSteel.FormKey,
+                 FistsKeywordStringOptional = new KeywordSearchData(){ KeywordString = "WAF_PerkFists07" },
+                 ArmorTypeToSetFor = ArmorType.LightArmor,
+            },
+            new MaterialFistsKeywordsData()
+            {
+                 MaterialKeyword = Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialIron.FormKey,
+                 FistsKeywordStringOptional = new KeywordSearchData(){ KeywordString = "WAF_PerkFists06" },
+                 ArmorTypeToSetFor = ArmorType.LightArmor,
+            },
+#endregion
             new MaterialFistsKeywordsData()
             {
                  MaterialKeyword=Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialDragonscale,
