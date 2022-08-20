@@ -196,6 +196,9 @@ namespace SynGlovesAddFirstsPerk
             }
             modMaterialFistsList = modMaterialFistsList.OrderByDescending(d => d.Value[0].Priority).ToDictionary(k => k.Key, v => v.Value);
 
+            HashSet<FormLink<IKeywordGetter>> fistsKeywords = new();
+            foreach(var d in modMaterialFistsList) foreach (var v in d.Value) if (!fistsKeywords.Contains(v.FistsKeyword!)) fistsKeywords.Add(v.FistsKeyword!);
+
             int patchedCount = 0;
             foreach (var itemGetter in state.LoadOrder.PriorityOrder.Armor().WinningOverrides())
             {
@@ -216,19 +219,41 @@ namespace SynGlovesAddFirstsPerk
                 FormLink<IKeywordGetter>? foundFormKey = null;
                 bool found = false;
                 bool alreadyHaveOneOfFistsKeyword = false;
-                foreach (var formKey in materialFirstKeyword) // iterati in order from stronger to weaker
+                foreach (var keyword in itemGetter.Keywords) // iterati in order from stronger to weaker
                 {
-                    if (itemGetter.Keywords.Contains(formKey.Value.FormKey))
+                    if (fistsKeywords.Contains(keyword))
                     {
                         alreadyHaveOneOfFistsKeyword = true;
                         break;
                     }
-                    if (!found && itemGetter.Keywords.Contains(formKey.Key.FormKey))
+                    if (!found && modMaterialFistsList.ContainsKey(keyword.FormKey))
                     {
                         found = true;
-                        foundFormKey = formKey.Key;
+                        var l = modMaterialFistsList[keyword.FormKey];
+                        foreach (var d in l)
+                        {
+                            if (d.ArmorTypeToSetFor == null || itemGetter.BodyTemplate.ArmorType == d.ArmorTypeToSetFor)
+                            {
+                                foundFormKey = d.FistsKeyword;
+                                break;
+                            }
+                        }
                     }
                 }
+
+                //foreach (var formKey in materialFirstKeyword) // iterati in order from stronger to weaker
+                //{
+                //    if (itemGetter.Keywords.Contains(formKey.Value.FormKey))
+                //    {
+                //        alreadyHaveOneOfFistsKeyword = true;
+                //        break;
+                //    }
+                //    if (!found && itemGetter.Keywords.Contains(formKey.Key.FormKey))
+                //    {
+                //        found = true;
+                //        foundFormKey = formKey.Key;
+                //    }
+                //}
 
                 // skip if not found or fists keyword already exists
                 if (alreadyHaveOneOfFistsKeyword || foundFormKey == null || foundFormKey.FormKey == default) continue;
