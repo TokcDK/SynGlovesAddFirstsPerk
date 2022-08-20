@@ -37,8 +37,8 @@ namespace SynGlovesAddFirstsPerk
             };
 
             // fill data for keywords search
-            Dictionary<string, List<MaterialFistsKeywordsData>> ModSpecificMaterialKeywordsSearch = new();
-            Dictionary<string, List<MaterialFistsKeywordsData>> ModSpecificFistsKeywordsSearch = new();
+            Dictionary<ModKey, Dictionary<string, List<MaterialFistsKeywordsData>>> ModSpecificMaterialKeywordsSearch = new();
+            Dictionary<ModKey, Dictionary<string, List<MaterialFistsKeywordsData>>> ModSpecificFistsKeywordsSearch = new();
             Dictionary<string, List<MaterialFistsKeywordsData>> MaterialKeywordsSearch = new();
             Dictionary<string, List<MaterialFistsKeywordsData>> FistsKeywordsSearch = new();
             foreach(var data in Settings.Value.ModMaterialFists)
@@ -47,11 +47,14 @@ namespace SynGlovesAddFirstsPerk
                 {
                     if (data.MaterialKeywordStringOptional.ModToSearchOptional != default)
                     {
-                        if (ModSpecificMaterialKeywordsSearch.ContainsKey(data.MaterialKeywordStringOptional.KeywordString))
+                        var modData = ModSpecificMaterialKeywordsSearch.ContainsKey(data.MaterialKeywordStringOptional.ModToSearchOptional) ? ModSpecificMaterialKeywordsSearch[data.MaterialKeywordStringOptional.ModToSearchOptional] : new Dictionary<string, List<MaterialFistsKeywordsData>>();
+                        
+                        if (modData.ContainsKey(data.MaterialKeywordStringOptional.KeywordString))
                         {
-                            ModSpecificMaterialKeywordsSearch[data.MaterialKeywordStringOptional.KeywordString].Add(data);
+                            var dataList = modData[data.MaterialKeywordStringOptional.KeywordString];
+                            if (!dataList.Contains(data)) dataList.Add(data);
                         }
-                        ModSpecificMaterialKeywordsSearch.Add(data.MaterialKeywordStringOptional.KeywordString, new List<MaterialFistsKeywordsData>() { data });
+                        else modData.Add(data.MaterialKeywordStringOptional.KeywordString, new List<MaterialFistsKeywordsData>() { data });
                     }
                     else
                     {
@@ -59,18 +62,21 @@ namespace SynGlovesAddFirstsPerk
                         {
                             MaterialKeywordsSearch[data.MaterialKeywordStringOptional.KeywordString].Add(data);
                         }
-                        MaterialKeywordsSearch.Add(data.MaterialKeywordStringOptional.KeywordString, new List<MaterialFistsKeywordsData>() { data });
+                        else MaterialKeywordsSearch.Add(data.MaterialKeywordStringOptional.KeywordString, new List<MaterialFistsKeywordsData>() { data });
                     }
                 }
                 if (data.FistsKeyword==null && !string.IsNullOrWhiteSpace(data.FistsKeywordStringOptional.KeywordString))
                 {
                     if (data.MaterialKeywordStringOptional.ModToSearchOptional != default)
                     {
-                        if (ModSpecificFistsKeywordsSearch.ContainsKey(data.FistsKeywordStringOptional.KeywordString))
+                        var modData = ModSpecificFistsKeywordsSearch.ContainsKey(data.FistsKeywordStringOptional.ModToSearchOptional) ? ModSpecificFistsKeywordsSearch[data.FistsKeywordStringOptional.ModToSearchOptional] : new Dictionary<string, List<MaterialFistsKeywordsData>>();
+
+                        if (modData.ContainsKey(data.FistsKeywordStringOptional.KeywordString))
                         {
-                            ModSpecificFistsKeywordsSearch[data.FistsKeywordStringOptional.KeywordString].Add(data);
+                            var dataList = modData[data.FistsKeywordStringOptional.KeywordString];
+                            if(!dataList.Contains(data)) dataList.Add(data);
                         }
-                        ModSpecificFistsKeywordsSearch.Add(data.FistsKeywordStringOptional.KeywordString, new List<MaterialFistsKeywordsData>() { data });
+                        else modData.Add(data.FistsKeywordStringOptional.KeywordString, new List<MaterialFistsKeywordsData>() { data });
                     }
                     else
                     {
@@ -78,7 +84,7 @@ namespace SynGlovesAddFirstsPerk
                         {
                             FistsKeywordsSearch[data.FistsKeywordStringOptional.KeywordString].Add(data);
                         }
-                        FistsKeywordsSearch.Add(data.FistsKeywordStringOptional.KeywordString, new List<MaterialFistsKeywordsData>() { data });
+                        else FistsKeywordsSearch.Add(data.FistsKeywordStringOptional.KeywordString, new List<MaterialFistsKeywordsData>() { data });
                     }
                 }
             }
