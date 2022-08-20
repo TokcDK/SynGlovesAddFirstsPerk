@@ -56,6 +56,8 @@ namespace SynGlovesAddFirstsPerk
                         var list = MaterialKeywordsSearch[mKeywordGetter.EditorID];
                         foreach (var d in list)
                         {
+                            if (d.MaterialKeyword != null) continue;
+
                             // set value and remove reference from search list
                             d.MaterialKeyword = data.MaterialKeyword;
                             list.Remove(d);
@@ -73,6 +75,8 @@ namespace SynGlovesAddFirstsPerk
                         var list = FistsKeywordsSearch[fKeywordGetter.EditorID];
                         foreach (var d in list)
                         {
+                            if (d.MaterialKeyword != null) continue;
+
                             // set value and remove reference from search list
                             d.MaterialKeyword = data.MaterialKeyword;
                             list.Remove(d);
@@ -104,6 +108,8 @@ namespace SynGlovesAddFirstsPerk
                             var list = matList[keyWordGetter.EditorID];
                             foreach (var d in list)
                             {
+                                if (d.MaterialKeyword != null) continue;
+
                                 // set value and remove reference from search list
                                 d.MaterialKeyword = keyWordGetter.FormKey;
                                 list.Remove(d);
@@ -117,6 +123,8 @@ namespace SynGlovesAddFirstsPerk
                             var list = fList[keyWordGetter.EditorID];
                             foreach (var d in list)
                             {
+                                if (d.MaterialKeyword != null) continue;
+
                                 // set value and remove reference from search list
                                 d.MaterialKeyword = keyWordGetter.FormKey;
                                 list.Remove(d);
@@ -125,6 +133,48 @@ namespace SynGlovesAddFirstsPerk
                             // remove empty list reference
                             if (list.Count == 0) fList.Remove(keyWordGetter.EditorID);
                         }
+                    }
+                }
+            }
+            // search keywords in all
+            bool isMatSearch = MaterialKeywordsSearch.Any(d => d.Value.Any(v => v.MaterialKeyword == null));
+            bool isFSearch = FistsKeywordsSearch.Any(d => d.Value.Any(v => v.FistsKeyword == null));
+
+            if(isMatSearch || isFSearch)
+            {
+                foreach (var itemGetter in state.LoadOrder.PriorityOrder.Keyword().WinningOverrides())
+                {
+                    if (string.IsNullOrWhiteSpace(itemGetter.EditorID)) continue;
+
+                    if (isMatSearch && MaterialKeywordsSearch!.ContainsKey(itemGetter.EditorID))
+                    {
+                        var list = MaterialKeywordsSearch[itemGetter.EditorID];
+                        foreach (var d in list)
+                        {
+                            if (d.MaterialKeyword != null) continue;
+
+                            // set value and remove reference from search list
+                            d.MaterialKeyword = itemGetter.FormKey;
+                            list.Remove(d);
+                        }
+
+                        // remove empty list reference
+                        if (list.Count == 0) MaterialKeywordsSearch.Remove(itemGetter.EditorID);
+                    }
+                    if (isFSearch && FistsKeywordsSearch!.ContainsKey(itemGetter.EditorID))
+                    {
+                        var list = FistsKeywordsSearch[itemGetter.EditorID];
+                        foreach (var d in list)
+                        {
+                            if (d.MaterialKeyword != null) continue;
+
+                            // set value and remove reference from search list
+                            d.MaterialKeyword = itemGetter.FormKey;
+                            list.Remove(d);
+                        }
+
+                        // remove empty list reference
+                        if (list.Count == 0) FistsKeywordsSearch.Remove(itemGetter.EditorID);
                     }
                 }
             }
