@@ -47,45 +47,17 @@ namespace SynGlovesAddFirstsPerk
                 {
                     if (data.MaterialKeywordStringOptional.ModToSearchOptional != default)
                     {
-                        var modData = ModSpecificMaterialKeywordsSearch.ContainsKey(data.MaterialKeywordStringOptional.ModToSearchOptional) ? ModSpecificMaterialKeywordsSearch[data.MaterialKeywordStringOptional.ModToSearchOptional] : new Dictionary<string, List<MaterialFistsKeywordsData>>();
-                        
-                        if (modData.ContainsKey(data.MaterialKeywordStringOptional.KeywordString))
-                        {
-                            var dataList = modData[data.MaterialKeywordStringOptional.KeywordString];
-                            if (!dataList.Contains(data)) dataList.Add(data);
-                        }
-                        else modData.Add(data.MaterialKeywordStringOptional.KeywordString, new List<MaterialFistsKeywordsData>() { data });
+                        ModSpecificMaterialKeywordsSearch.TryAdd(data);
                     }
-                    else
-                    {
-                        if (MaterialKeywordsSearch.ContainsKey(data.MaterialKeywordStringOptional.KeywordString))
-                        {
-                            MaterialKeywordsSearch[data.MaterialKeywordStringOptional.KeywordString].Add(data);
-                        }
-                        else MaterialKeywordsSearch.Add(data.MaterialKeywordStringOptional.KeywordString, new List<MaterialFistsKeywordsData>() { data });
-                    }
+                    else MaterialKeywordsSearch.TryAdd(data);
                 }
                 if (data.FistsKeyword==null && !string.IsNullOrWhiteSpace(data.FistsKeywordStringOptional.KeywordString))
                 {
                     if (data.MaterialKeywordStringOptional.ModToSearchOptional != default)
                     {
-                        var modData = ModSpecificFistsKeywordsSearch.ContainsKey(data.FistsKeywordStringOptional.ModToSearchOptional) ? ModSpecificFistsKeywordsSearch[data.FistsKeywordStringOptional.ModToSearchOptional] : new Dictionary<string, List<MaterialFistsKeywordsData>>();
-
-                        if (modData.ContainsKey(data.FistsKeywordStringOptional.KeywordString))
-                        {
-                            var dataList = modData[data.FistsKeywordStringOptional.KeywordString];
-                            if(!dataList.Contains(data)) dataList.Add(data);
-                        }
-                        else modData.Add(data.FistsKeywordStringOptional.KeywordString, new List<MaterialFistsKeywordsData>() { data });
+                        ModSpecificFistsKeywordsSearch.TryAdd(data);
                     }
-                    else
-                    {
-                        if (FistsKeywordsSearch.ContainsKey(data.FistsKeywordStringOptional.KeywordString))
-                        {
-                            FistsKeywordsSearch[data.FistsKeywordStringOptional.KeywordString].Add(data);
-                        }
-                        else FistsKeywordsSearch.Add(data.FistsKeywordStringOptional.KeywordString, new List<MaterialFistsKeywordsData>() { data });
-                    }
+                    else FistsKeywordsSearch.TryAdd(data);
                 }
             }
             // search in settings keywords
