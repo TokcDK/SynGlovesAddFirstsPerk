@@ -199,6 +199,8 @@ namespace SynGlovesAddFirstsPerk
             HashSet<FormLink<IKeywordGetter>> fistsKeywords = new();
             foreach (var d in modMaterialFistsList) foreach (var v in d.Value) if (!fistsKeywords.Contains(v.FistsKeyword!)) fistsKeywords.Add(v.FistsKeyword!);
 
+            Console.WriteLine($"ArmorMaterialDaedric:\n{string.Join("\n", modMaterialFistsList[Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialDaedric].Select(v=>v.FistsKeyword))}");
+
             int patchedCount = 0;
             foreach (var itemGetter in state.LoadOrder.PriorityOrder.Armor().WinningOverrides())
             {
@@ -213,6 +215,8 @@ namespace SynGlovesAddFirstsPerk
                 if (itemGetter.BodyTemplate.ArmorType == ArmorType.Clothing) continue; // maybe try to parse this variant later?
                 if (!itemGetter.BodyTemplate.FirstPersonFlags.HasFlag(BipedObjectFlag.Hands)) continue; // maybe try to parse this variant later?
                 if (itemGetter.Keywords == null || itemGetter.Keywords.Count == 0) continue;
+
+                if (itemGetter.EditorID!= "DX_MAC_MertaAssassinGlovesB_HW") continue;// for test
 
                 // find material keyword
                 //Console.WriteLine($"Find material keyword for {itemGetter.EditorID}");
@@ -232,11 +236,10 @@ namespace SynGlovesAddFirstsPerk
                         var l = modMaterialFistsList[keyword.FormKey];
                         foreach (var d in l)
                         {
-                            if (d.ArmorTypeToSetFor == ArmorType.Clothing || itemGetter.BodyTemplate.ArmorType == d.ArmorTypeToSetFor)
-                            {
-                                foundFormKey = d.FistsKeyword;
-                                break;
-                            }
+                            //if (itemGetter.BodyTemplate.ArmorType != d.ArmorTypeToSetFor) continue;
+
+                            foundFormKey = d.FistsKeyword;
+                            break;
                         }
                     }
                 }
@@ -261,7 +264,7 @@ namespace SynGlovesAddFirstsPerk
                 // add missing fists keyword
                 patchedCount++;
                 var itemToPatch = state.PatchMod.Armors.GetOrAddAsOverride(itemGetter);
-                itemToPatch.Keywords!.Add(materialFirstKeyword[foundFormKey!]); // add fists keyword for the materia
+                itemToPatch.Keywords!.Add(foundFormKey); // add fists keyword for the materia
             }
 
             Console.WriteLine($"Patched {patchedCount} records");
