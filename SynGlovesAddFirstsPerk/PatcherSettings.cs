@@ -12,7 +12,7 @@ namespace SynGlovesAddFirstsPerk
         public string? KeywordString;
         [SynthesisOrder]
         [SynthesisTooltip($"Mod where to search {nameof(KeywordString)}")]
-        public ModKey ModToSearchOptional;
+        public ModKey ModToSearchOptional=ModKey.Null;
     }
     public class MaterialFistsKeywordsData
     {

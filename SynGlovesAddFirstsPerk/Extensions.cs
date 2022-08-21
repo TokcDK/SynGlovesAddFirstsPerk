@@ -1,41 +1,51 @@
 ﻿using Mutagen.Bethesda.Plugins;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SynGlovesAddFirstsPerk
 {
     internal static class Extensions
     {
-        internal static void TryAdd(this Dictionary<ModKey, Dictionary<string, List<MaterialFistsKeywordsData>>> list, MaterialFistsKeywordsData data)
+        internal static void TryAdd(this Dictionary<ModKey, Dictionary<string, List<MaterialFistsKeywordsData>>> list, MaterialFistsKeywordsData data, string key)
         {
-            var modData = list.ContainsKey(data.MaterialKeywordStringOptional.ModToSearchOptional) ? list[data.MaterialKeywordStringOptional.ModToSearchOptional] : new Dictionary<string, List<MaterialFistsKeywordsData>>();
+            var modData = list.ContainsKey(key) ? list[key] : new Dictionary<string, List<MaterialFistsKeywordsData>>();
 
-            if (string.IsNullOrWhiteSpace(data.MaterialKeywordStringOptional.KeywordString)) return;
+            if (string.IsNullOrWhiteSpace(key)) return;
 
-            if (modData.ContainsKey(data.MaterialKeywordStringOptional.KeywordString))
+            if (modData.ContainsKey(key))
             {
-                var dataList = modData[data.MaterialKeywordStringOptional.KeywordString];
+                var dataList = modData[key];
                 if (!dataList.Contains(data)) dataList.Add(data);
             }
-            else modData.Add(data.MaterialKeywordStringOptional.KeywordString, new List<MaterialFistsKeywordsData>() { data });
+            else modData.Add(key, new List<MaterialFistsKeywordsData>() { data });
         }
-        internal static void TryAdd(this Dictionary<string, List<MaterialFistsKeywordsData>> list, MaterialFistsKeywordsData data)
+        internal static void TryAdd(this Dictionary<string, List<MaterialFistsKeywordsData>> list, MaterialFistsKeywordsData data, string key)
         {
-            if (string.IsNullOrWhiteSpace(data.MaterialKeywordStringOptional.KeywordString)) return;
+            if (string.IsNullOrWhiteSpace(key)) return;
 
-            if (list.ContainsKey(data.MaterialKeywordStringOptional.KeywordString))
+            if (list.ContainsKey(key))
             {
-                list[data.MaterialKeywordStringOptional.KeywordString].Add(data);
+                list[key].Add(data);
             }
-            else list.Add(data.MaterialKeywordStringOptional.KeywordString, new List<MaterialFistsKeywordsData>() { data });
+            else list.Add(key, new List<MaterialFistsKeywordsData>() { data });
         }
         internal static void TryAddTo(this MaterialFistsKeywordsData data, Dictionary<string, List<MaterialFistsKeywordsData>> list, Dictionary<ModKey, Dictionary<string, List<MaterialFistsKeywordsData>>> modSpecificList, bool isMaterial)
         {
-            if (isMaterial && data.MaterialKeyword == null) if (data.MaterialKeywordStringOptional.ModToSearchOptional != default) modSpecificList.TryAdd(data); else list.TryAdd(data);
-            if (!isMaterial && data.FistsKeyword == null) if (data.MaterialKeywordStringOptional.ModToSearchOptional != default) modSpecificList.TryAdd(data); else list.TryAdd(data);
+            if (isMaterial && data.MaterialKeyword == null) if (data.MaterialKeywordStringOptional.ModToSearchOptional != default) modSpecificList.TryAdd(data, data.MaterialKeywordStringOptional.KeywordString!); else list.TryAdd(data, data.MaterialKeywordStringOptional.KeywordString!);
+            //Console.WriteLine($"data.FistsKeyword={data.FistsKeyword}");
+            if (!isMaterial && data.FistsKeyword == null)
+            {
+                //Console.WriteLine($"1");
+                //Console.WriteLine($"data.MaterialKeywordStringOptional.ModToSearchOptional={data.MaterialKeywordStringOptional.ModToSearchOptional}");
+                if (data.MaterialKeywordStringOptional.ModToSearchOptional != ModKey.Null)
+                {
+                    //Console.WriteLine($"---");
+                    modSpecificList.TryAdd(data, data.FistsKeywordStringOptional.KeywordString!);
+                }
+                else
+                {
+                    //Console.WriteLine($"2");
+                    list.TryAdd(data, data.FistsKeywordStringOptional.KeywordString!);
+                }
+            }
         }
     }
 }

@@ -21,34 +21,39 @@ namespace SynGlovesAddFirstsPerk
         public static void RunPatch(IPatcherState<ISkyrimMod, ISkyrimModGetter> state)
         {
             // material keyword and fists keyword for in in order from stronger to weaker because can be two material keywords and need to get stronger
-            Dictionary<FormLink<IKeywordGetter>, FormLink<IKeywordGetter>> materialFirstKeyword = new()
-            {
-                { Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialDaedric.FormKey, Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsDaedric.FormKey },
-                { Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialDragonplate.FormKey, Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsDragonplate.FormKey },
-                { Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialEbony.FormKey, Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsEbony.FormKey },
-                { Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialImperialHeavy.FormKey, Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsSteelPlate.FormKey },
-                { Mutagen.Bethesda.FormKeys.SkyrimSE.Update.Keyword.ArmorMaterialBlades.FormKey, Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsSteelPlate.FormKey },
-                { Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialSteelPlate.FormKey, Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsSteelPlate.FormKey },
-                { Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialOrcish.FormKey, Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsOrcish.FormKey },
-                { Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialDwarven.FormKey, Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsDwarven.FormKey },
-                { Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.WeapMaterialSilver.FormKey, Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsSteel.FormKey },
-                { Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialSteel.FormKey, Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsSteel.FormKey },
-                { Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialIron.FormKey, Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsIron.FormKey },
-            };
+            //Dictionary<FormLink<IKeywordGetter>, FormLink<IKeywordGetter>> materialFirstKeyword = new()
+            //{
+            //    { Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialDaedric.FormKey, Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsDaedric.FormKey },
+            //    { Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialDragonplate.FormKey, Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsDragonplate.FormKey },
+            //    { Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialEbony.FormKey, Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsEbony.FormKey },
+            //    { Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialImperialHeavy.FormKey, Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsSteelPlate.FormKey },
+            //    { Mutagen.Bethesda.FormKeys.SkyrimSE.Update.Keyword.ArmorMaterialBlades.FormKey, Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsSteelPlate.FormKey },
+            //    { Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialSteelPlate.FormKey, Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsSteelPlate.FormKey },
+            //    { Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialOrcish.FormKey, Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsOrcish.FormKey },
+            //    { Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialDwarven.FormKey, Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsDwarven.FormKey },
+            //    { Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.WeapMaterialSilver.FormKey, Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsSteel.FormKey },
+            //    { Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialSteel.FormKey, Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsSteel.FormKey },
+            //    { Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialIron.FormKey, Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.PerkFistsIron.FormKey },
+            //};
 
             // fill data for keywords search
             Dictionary<ModKey, Dictionary<string, List<MaterialFistsKeywordsData>>> ModSpecificMaterialKeywordsSearch = new();
             Dictionary<ModKey, Dictionary<string, List<MaterialFistsKeywordsData>>> ModSpecificFistsKeywordsSearch = new();
             Dictionary<string, List<MaterialFistsKeywordsData>> MaterialKeywordsSearch = new();
             Dictionary<string, List<MaterialFistsKeywordsData>> FistsKeywordsSearch = new();
-            foreach (var data in Settings.Value.ModMaterialFists)
+            HashSet<MaterialFistsKeywordsData>? modMaterialFistsList = new(Settings.Value.ModMaterialFists);
+            //Console.WriteLine($"{nameof(mflist)}.count is {MaterialKeywordsSearch.Count}");
+            foreach (var data in modMaterialFistsList)
             {
                 data.TryAddTo(MaterialKeywordsSearch, ModSpecificMaterialKeywordsSearch, true);
                 data.TryAddTo(FistsKeywordsSearch, ModSpecificFistsKeywordsSearch, false);
             }
+            //Console.WriteLine($"{nameof(MaterialKeywordsSearch)}.count is {MaterialKeywordsSearch.Count}");
+            //Console.WriteLine($"{nameof(FistsKeywordsSearch)}.count is {FistsKeywordsSearch.Count}");
+
 
             // search in settings keywords
-            foreach (var data in Settings.Value.ModMaterialFists)
+            foreach (var data in modMaterialFistsList)
             {
                 if (data.MaterialKeyword != null && data.MaterialKeyword.TryResolve(state.LinkCache, out var mKeywordGetter) && !string.IsNullOrWhiteSpace(mKeywordGetter.EditorID))
                 {
@@ -107,8 +112,9 @@ namespace SynGlovesAddFirstsPerk
                         if (isSearchMaterial && matList!.ContainsKey(keyWordGetter.EditorID))
                         {
                             var list = matList[keyWordGetter.EditorID];
-                            foreach (var d in list)
+                            for (int i = 0; i < list.Count; i++)
                             {
+                                var d = list[i];
                                 if (d.MaterialKeyword != null) continue;
 
                                 // set value and remove reference from search list
@@ -122,8 +128,9 @@ namespace SynGlovesAddFirstsPerk
                         if (isSearchFists && fList!.ContainsKey(keyWordGetter.EditorID))
                         {
                             var list = fList[keyWordGetter.EditorID];
-                            foreach (var d in list)
+                            for (int i = 0; i < list.Count; i++)
                             {
+                                var d = list[i];
                                 if (d.MaterialKeyword != null) continue;
 
                                 // set value and remove reference from search list
@@ -141,17 +148,24 @@ namespace SynGlovesAddFirstsPerk
             bool isMatSearch = MaterialKeywordsSearch.Any(d => d.Value.Any(v => v.MaterialKeyword == null));
             bool isFSearch = FistsKeywordsSearch.Any(d => d.Value.Any(v => v.FistsKeyword == null));
 
+            //Console.WriteLine($"1 {nameof(FistsKeywordsSearch)} fists edid is {FistsKeywordsSearch.First().Key}");
+            //Console.WriteLine($"1 {nameof(FistsKeywordsSearch)} fists keyword is {FistsKeywordsSearch.First().Value.First().FistsKeyword}");
             if (isMatSearch || isFSearch)
             {
+                //Console.WriteLine($"{nameof(isFSearch)} is {isFSearch}");
                 foreach (var itemGetter in state.LoadOrder.PriorityOrder.Keyword().WinningOverrides())
                 {
                     if (string.IsNullOrWhiteSpace(itemGetter.EditorID)) continue;
+                    //if (itemGetter.EditorID!= "WAF_PerkFists12") continue;
+
+                    //Console.WriteLine($"1 {nameof(itemGetter.EditorID)} is {itemGetter.EditorID}");
 
                     if (isMatSearch && MaterialKeywordsSearch!.ContainsKey(itemGetter.EditorID))
                     {
                         var list = MaterialKeywordsSearch[itemGetter.EditorID];
-                        foreach (var d in list)
+                        for (int i = 0; i < list.Count; i++)
                         {
+                            var d = list[i];
                             if (d.MaterialKeyword != null) continue;
 
                             // set value and remove reference from search list
@@ -164,13 +178,16 @@ namespace SynGlovesAddFirstsPerk
                     }
                     if (isFSearch && FistsKeywordsSearch!.ContainsKey(itemGetter.EditorID))
                     {
+                        //Console.WriteLine($"2 {nameof(itemGetter.EditorID)} is {itemGetter.EditorID}");
                         var list = FistsKeywordsSearch[itemGetter.EditorID];
-                        foreach (var d in list)
+                        for (int i=0;i< list.Count;i++)
                         {
-                            if (d.MaterialKeyword != null) continue;
+                            var d = list[i];
+                            if (d.FistsKeyword != null) continue;
 
                             // set value and remove reference from search list
-                            d.MaterialKeyword = itemGetter.FormKey;
+                            //Console.WriteLine($"2 {nameof(itemGetter.FormKey)} is {itemGetter.FormKey}");
+                            d.FistsKeyword = itemGetter.FormKey;
                             list.Remove(d);
                         }
 
@@ -179,27 +196,36 @@ namespace SynGlovesAddFirstsPerk
                     }
                 }
             }
+
+            //Console.WriteLine($"{nameof(FistsKeywordsSearch)}.count is {FistsKeywordsSearch.Count}");
+            //Console.WriteLine($"2 {nameof(FistsKeywordsSearch)} fists key is {FistsKeywordsSearch.First().Value.First().FistsKeyword}");
             // get valid list
-            Dictionary<FormLink<IKeywordGetter>, List<MaterialFistsKeywordsData>>? modMaterialFistsList = new();
-            foreach (var data in Settings.Value.ModMaterialFists)
+            Dictionary<FormLink<IKeywordGetter>, List<MaterialFistsKeywordsData>>? modMaterialFistsListResult = new();
+            //foreach (var data in new[] { MaterialKeywordsSearch })
+            //{
+
+            //}
+            foreach (var data in modMaterialFistsList)
             {
                 if (data.MaterialKeyword == null || data.FistsKeyword == null) continue;
 
-                if (modMaterialFistsList.ContainsKey(data.MaterialKeyword)) modMaterialFistsList[data.MaterialKeyword].Add(data); else modMaterialFistsList.Add(data.MaterialKeyword, new List<MaterialFistsKeywordsData>() { data });
+                if (modMaterialFistsListResult.ContainsKey(data.MaterialKeyword)) modMaterialFistsListResult[data.MaterialKeyword].Add(data); else modMaterialFistsListResult.Add(data.MaterialKeyword, new List<MaterialFistsKeywordsData>() { data });
             }
             // order by priority
-            List<FormLink<IKeywordGetter>> keys = new(modMaterialFistsList.Keys);
+            List<FormLink<IKeywordGetter>> keys = new(modMaterialFistsListResult.Keys);
             foreach (var key in keys)
             {
-                var list = modMaterialFistsList[key];
+                var list = modMaterialFistsListResult[key];
                 list = list.OrderByDescending(d => d.Priority).ToList();
             }
-            modMaterialFistsList = modMaterialFistsList.OrderByDescending(d => d.Value[0].Priority).ToDictionary(k => k.Key, v => v.Value);
+            modMaterialFistsListResult = modMaterialFistsListResult.OrderByDescending(d => d.Value[0].Priority).ToDictionary(k => k.Key, v => v.Value);
 
             HashSet<FormLink<IKeywordGetter>> fistsKeywords = new();
-            foreach (var d in modMaterialFistsList) foreach (var v in d.Value) if (!fistsKeywords.Contains(v.FistsKeyword!)) fistsKeywords.Add(v.FistsKeyword!);
+            foreach (var d in modMaterialFistsListResult) foreach (var v in d.Value) if (!fistsKeywords.Contains(v.FistsKeyword!)) fistsKeywords.Add(v.FistsKeyword!);
 
-            Console.WriteLine($"ArmorMaterialDaedric:\n{string.Join("\n", modMaterialFistsList[Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialDaedric].Select(v=>v.FistsKeyword))}");
+            //Console.WriteLine($"ArmorMaterialDaedric:\n{string.Join("\n", modMaterialFistsList[Mutagen.Bethesda.FormKeys.SkyrimSE.Skyrim.Keyword.ArmorMaterialDaedric].Select(v => v.FistsKeyword))}");
+            
+            //Console.WriteLine($"{nameof(modMaterialFistsList)}.count is {modMaterialFistsList.Count}");
 
             int patchedCount = 0;
             foreach (var itemGetter in state.LoadOrder.PriorityOrder.Armor().WinningOverrides())
@@ -216,7 +242,7 @@ namespace SynGlovesAddFirstsPerk
                 if (!itemGetter.BodyTemplate.FirstPersonFlags.HasFlag(BipedObjectFlag.Hands)) continue; // maybe try to parse this variant later?
                 if (itemGetter.Keywords == null || itemGetter.Keywords.Count == 0) continue;
 
-                if (itemGetter.EditorID!= "DX_MAC_MertaAssassinGlovesB_HW") continue;// for test
+                //if (itemGetter.EditorID != "DX_MAC_MertaAssassinGlovesB_HW") continue;// for test
 
                 // find material keyword
                 //Console.WriteLine($"Find material keyword for {itemGetter.EditorID}");
@@ -230,13 +256,13 @@ namespace SynGlovesAddFirstsPerk
                         alreadyHaveOneOfFistsKeyword = true;
                         break;
                     }
-                    if (!found && modMaterialFistsList.ContainsKey(keyword.FormKey))
+                    if (!found && modMaterialFistsListResult.ContainsKey(keyword.FormKey))
                     {
                         found = true;
-                        var l = modMaterialFistsList[keyword.FormKey];
+                        var l = modMaterialFistsListResult[keyword.FormKey];
                         foreach (var d in l)
                         {
-                            //if (itemGetter.BodyTemplate.ArmorType != d.ArmorTypeToSetFor) continue;
+                            if (d.ArmorTypeToSetFor == -1 || (int)itemGetter.BodyTemplate.ArmorType != d.ArmorTypeToSetFor) continue;
 
                             foundFormKey = d.FistsKeyword;
                             break;
