@@ -21,8 +21,8 @@ namespace SynGlovesAddFirstsPerk
         public static void RunPatch(IPatcherState<ISkyrimMod, ISkyrimModGetter> state)
         {
             // fill data for keywords search
-            Dictionary<string, List<MaterialFistsKeywordsData>> MaterialKeywordsSearch = new();
-            Dictionary<string, List<MaterialFistsKeywordsData>> FistsKeywordsSearch = new();
+            var MaterialKeywordsSearch = new Dictionary<string, List<MaterialFistsKeywordsData>>();
+            var FistsKeywordsSearch = new Dictionary<string, List<MaterialFistsKeywordsData>>();
             HashSet<MaterialFistsKeywordsData>? modMaterialFistsList = new(Settings.Value.ModMaterialFists);
             foreach (var data in modMaterialFistsList)
             {
