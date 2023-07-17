@@ -130,7 +130,7 @@ namespace SynGlovesAddFirstsPerk
                         alreadyHaveOneOfFistsKeyword = true;
                         break;
                     }
-                    if (!found && modMaterialFistsListResult.ContainsKey(keyword.FormKey))
+                    if (!found && modMaterialFistsListResult!.ContainsKey(keyword.FormKey))
                     {
                         found = true;
                         var l = modMaterialFistsListResult[keyword.FormKey];
