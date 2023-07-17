@@ -89,6 +89,7 @@ namespace SynGlovesAddFirstsPerk
             //        }
             //    }
             //}
+
             // search keywords in all
             bool isMatSearch = materialKeywordsSearch.Any(d => d.Value.Any(v => (v.MaterialKeyword == default || v.MaterialKeyword.IsNull)));
             bool isFSearch = fistsKeywordsSearch.Any(d => d.Value.Any(v => (v.FistsKeyword == null || v.FistsKeyword.IsNull)));
@@ -101,27 +102,10 @@ namespace SynGlovesAddFirstsPerk
             }
 
             // get valid list
-            Dictionary<FormLink<IKeywordGetter>, List<MaterialFistsKeywordsData>>? modMaterialFistsListResult = new();
-            foreach (var data in modMaterialFistsList)
-            {
-                if (data.MaterialKeyword == null || data.MaterialKeyword.IsNull || data.FistsKeyword == null || data.FistsKeyword.IsNull) continue;
-
-                if (modMaterialFistsListResult.ContainsKey(data.MaterialKeyword))
-                    modMaterialFistsListResult[data.MaterialKeyword].Add(data);
-                else
-                    modMaterialFistsListResult.Add(data.MaterialKeyword, new List<MaterialFistsKeywordsData>() { data });
-            }
-            // order by priority
-            List<FormLink<IKeywordGetter>> keys = new(modMaterialFistsListResult.Keys);
-            foreach (var key in keys)
-            {
-                var list = modMaterialFistsListResult[key];
-                list = list.OrderByDescending(d => d.Priority).ToList();
-            }
-            modMaterialFistsListResult = modMaterialFistsListResult.OrderByDescending(d => d.Value[0].Priority).ToDictionary(k => k.Key, v => v.Value);
+            var modMaterialFistsListResult = GetValidList(modMaterialFistsList);
 
             HashSet<FormLink<IKeywordGetter>> fistsKeywords = new();
-            foreach (var d in modMaterialFistsListResult) foreach (var v in d.Value) if (!fistsKeywords.Contains(v.FistsKeyword!)) fistsKeywords.Add(v.FistsKeyword!);
+            foreach (var d in modMaterialFistsListResult!) foreach (var v in d.Value) if (!fistsKeywords.Contains(v.FistsKeyword!)) fistsKeywords.Add(v.FistsKeyword!);
 
             int patchedCount = 0;
             foreach (var itemGetter in state.LoadOrder.PriorityOrder.Armor().WinningOverrides())
@@ -171,6 +155,28 @@ namespace SynGlovesAddFirstsPerk
             }
 
             Console.WriteLine($"Patched {patchedCount} records");
+        }
+
+        private static Dictionary<FormLink<IKeywordGetter>, List<MaterialFistsKeywordsData>>? GetValidList(HashSet<MaterialFistsKeywordsData> modMaterialFistsList)
+        {
+            Dictionary<FormLink<IKeywordGetter>, List<MaterialFistsKeywordsData>>? modMaterialFistsListResult = new();
+            foreach (var data in modMaterialFistsList)
+            {
+                if (data.MaterialKeyword == null || data.MaterialKeyword.IsNull || data.FistsKeyword == null || data.FistsKeyword.IsNull) continue;
+
+                if (modMaterialFistsListResult.ContainsKey(data.MaterialKeyword))
+                    modMaterialFistsListResult[data.MaterialKeyword].Add(data);
+                else
+                    modMaterialFistsListResult.Add(data.MaterialKeyword, new List<MaterialFistsKeywordsData>() { data });
+            }
+            // order by priority
+            List<FormLink<IKeywordGetter>> keys = new(modMaterialFistsListResult.Keys);
+            foreach (var key in keys)
+            {
+                var list = modMaterialFistsListResult[key];
+                list = list.OrderByDescending(d => d.Priority).ToList();
+            }
+            return modMaterialFistsListResult.OrderByDescending(d => d.Value[0].Priority).ToDictionary(k => k.Key, v => v.Value);
         }
 
         private static void SearchKeyWordsInSettings(Mutagen.Bethesda.Plugins.Cache.ILinkCache<ISkyrimMod, ISkyrimModGetter> linkCache, Dictionary<string, List<MaterialFistsKeywordsData>> keywordsToSearch, FormLink<IKeywordGetter>? keywordFormLink)
