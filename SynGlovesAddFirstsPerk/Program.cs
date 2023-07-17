@@ -21,13 +21,13 @@ namespace SynGlovesAddFirstsPerk
         public static void RunPatch(IPatcherState<ISkyrimMod, ISkyrimModGetter> state)
         {
             // fill data for keywords search
-            var MaterialKeywordsSearch = new Dictionary<string, List<MaterialFistsKeywordsData>>();
-            var FistsKeywordsSearch = new Dictionary<string, List<MaterialFistsKeywordsData>>();
+            var materialKeywordsSearch = new Dictionary<string, List<MaterialFistsKeywordsData>>();
+            var fistsKeywordsSearch = new Dictionary<string, List<MaterialFistsKeywordsData>>();
             HashSet<MaterialFistsKeywordsData>? modMaterialFistsList = new(Settings.Value.ModMaterialFists);
             foreach (var data in modMaterialFistsList)
             {
-                data.TryAddTo(MaterialKeywordsSearch, true);
-                data.TryAddTo(FistsKeywordsSearch, false);
+                data.TryAddTo(materialKeywordsSearch, true);
+                data.TryAddTo(fistsKeywordsSearch, false);
             }
 
             // search in settings keywords
@@ -35,9 +35,9 @@ namespace SynGlovesAddFirstsPerk
             {
                 if (data.MaterialKeyword != null && data.MaterialKeyword.TryResolve(state.LinkCache, out var mKeywordGetter) && !string.IsNullOrWhiteSpace(mKeywordGetter.EditorID))
                 {
-                    if (MaterialKeywordsSearch.ContainsKey(mKeywordGetter.EditorID))
+                    if (materialKeywordsSearch.ContainsKey(mKeywordGetter.EditorID))
                     {
-                        var list = MaterialKeywordsSearch[mKeywordGetter.EditorID];
+                        var list = materialKeywordsSearch[mKeywordGetter.EditorID];
                         foreach (var d in list)
                         {
                             if (d.MaterialKeyword != null) continue;
@@ -48,15 +48,15 @@ namespace SynGlovesAddFirstsPerk
                         }
 
                         // remove empty list reference
-                        if (list.Count == 0) MaterialKeywordsSearch.Remove(mKeywordGetter.EditorID);
+                        if (list.Count == 0) materialKeywordsSearch.Remove(mKeywordGetter.EditorID);
                     }
                 }
 
                 if (data.FistsKeyword != null && data.FistsKeyword.TryResolve(state.LinkCache, out var fKeywordGetter) && !string.IsNullOrWhiteSpace(fKeywordGetter.EditorID))
                 {
-                    if (FistsKeywordsSearch.ContainsKey(fKeywordGetter.EditorID))
+                    if (fistsKeywordsSearch.ContainsKey(fKeywordGetter.EditorID))
                     {
-                        var list = FistsKeywordsSearch[fKeywordGetter.EditorID];
+                        var list = fistsKeywordsSearch[fKeywordGetter.EditorID];
                         foreach (var d in list)
                         {
                             if (d.MaterialKeyword != null) continue;
@@ -67,7 +67,7 @@ namespace SynGlovesAddFirstsPerk
                         }
 
                         // remove empty list reference
-                        if (list.Count == 0) FistsKeywordsSearch.Remove(fKeywordGetter.EditorID);
+                        if (list.Count == 0) fistsKeywordsSearch.Remove(fKeywordGetter.EditorID);
                     }
                 }
             }
@@ -123,50 +123,14 @@ namespace SynGlovesAddFirstsPerk
             //    }
             //}
             // search keywords in all
-            bool isMatSearch = MaterialKeywordsSearch.Any(d => d.Value.Any(v => (v.MaterialKeyword == default || v.MaterialKeyword.IsNull)));
-            bool isFSearch = FistsKeywordsSearch.Any(d => d.Value.Any(v => (v.FistsKeyword == null || v.FistsKeyword.IsNull)));
+            bool isMatSearch = materialKeywordsSearch.Any(d => d.Value.Any(v => (v.MaterialKeyword == default || v.MaterialKeyword.IsNull)));
+            bool isFSearch = fistsKeywordsSearch.Any(d => d.Value.Any(v => (v.FistsKeyword == null || v.FistsKeyword.IsNull)));
 
             if (isMatSearch || isFSearch)
             {
-                foreach (var itemGetter in state.LoadOrder.PriorityOrder.Keyword().WinningOverrides())
-                {
-                    if (string.IsNullOrWhiteSpace(itemGetter.EditorID)) continue;
-
-                    string keyWordEdid = itemGetter.EditorID.ToLower();
-
-                    if (isMatSearch && MaterialKeywordsSearch.ContainsKey(keyWordEdid))
-                    {
-                        var list = MaterialKeywordsSearch[keyWordEdid];
-                        for (int i = 0; i < list.Count; i++)
-                        {
-                            var d = list[i];
-                            if (d.MaterialKeyword != null && !d.MaterialKeyword.IsNull) continue;
-
-                            // set value and remove reference from search list
-                            d.MaterialKeyword = itemGetter.FormKey;
-                            list.Remove(d);
-                        }
-
-                        // remove empty list reference
-                        if (list.Count == 0) MaterialKeywordsSearch.Remove(keyWordEdid.ToLower());
-                    }
-                    if (isFSearch && FistsKeywordsSearch.ContainsKey(keyWordEdid))
-                    {
-                        var list = FistsKeywordsSearch[keyWordEdid];
-                        for (int i = 0; i < list.Count; i++)
-                        {
-                            var d = list[i];
-                            if (d.FistsKeyword != null && !d.FistsKeyword.IsNull) continue;
-
-                            // set value and remove reference from search list
-                            d.FistsKeyword = itemGetter.FormKey;
-                            list.Remove(d);
-                        }
-
-                        // remove empty list reference
-                        if (list.Count == 0) FistsKeywordsSearch.Remove(keyWordEdid);
-                    }
-                }
+                SearchKeywordsByEdId(state.LoadOrder.PriorityOrder
+                    , isMatSearch, materialKeywordsSearch
+                    , isFSearch, fistsKeywordsSearch);
             }
 
             // get valid list
@@ -195,7 +159,7 @@ namespace SynGlovesAddFirstsPerk
             int patchedCount = 0;
             foreach (var itemGetter in state.LoadOrder.PriorityOrder.Armor().WinningOverrides())
             {
-                // skip inavalid
+                // skip invalid
                 if (itemGetter.IsDeleted) continue;
                 if (itemGetter.MajorFlags.HasFlag(Armor.MajorFlag.NonPlayable)) continue;
                 if (itemGetter.MajorFlags.HasFlag(Armor.MajorFlag.Shield)) continue;
@@ -240,6 +204,25 @@ namespace SynGlovesAddFirstsPerk
             }
 
             Console.WriteLine($"Patched {patchedCount} records");
+        }
+
+        private static void SearchKeywordsByEdId(IEnumerable<Mutagen.Bethesda.Plugins.Order.IModListing<ISkyrimModGetter>> priorityOrder, bool isMatSearch, Dictionary<string, List<MaterialFistsKeywordsData>> materialKeywordsSearch, bool isFSearch, Dictionary<string, List<MaterialFistsKeywordsData>> fistsKeywordsSearch)
+        {
+            foreach (var itemGetter in priorityOrder.Keyword().WinningOverrides())
+            {
+                if (string.IsNullOrWhiteSpace(itemGetter.EditorID)) continue;
+
+                string keyWordEdid = itemGetter.EditorID.ToLower();
+
+                if (isMatSearch && materialKeywordsSearch.ContainsKey(keyWordEdid))
+                {
+                    materialKeywordsSearch.TryAddKeyWord(itemGetter, keyWordEdid);
+                }
+                if (isFSearch && fistsKeywordsSearch.ContainsKey(keyWordEdid))
+                {
+                    fistsKeywordsSearch.TryAddKeyWord(itemGetter, keyWordEdid);
+                }
+            }
         }
     }
 }

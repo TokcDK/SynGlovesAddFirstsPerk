@@ -1,4 +1,5 @@
 ﻿using Mutagen.Bethesda.Plugins;
+using Mutagen.Bethesda.Skyrim;
 
 namespace SynGlovesAddFirstsPerk
 {
@@ -26,6 +27,23 @@ namespace SynGlovesAddFirstsPerk
             {
                 list.TryAdd(data, data.FistsKeywordEdidOptional!);
             }
+        }
+
+        internal static void TryAddKeyWord(this Dictionary<string, List<MaterialFistsKeywordsData>> listToSearch, IKeywordGetter itemGetter, string keyWordEdid)
+        {
+            var list = listToSearch[keyWordEdid];
+            for (int i = 0; i < list.Count; i++)
+            {
+                var d = list[i];
+                if (d.FistsKeyword != null && !d.FistsKeyword.IsNull) continue;
+
+                // set value and remove reference from search list
+                d.FistsKeyword = itemGetter.FormKey;
+                list.Remove(d);
+            }
+
+            // remove empty list reference
+            if (list.Count == 0) listToSearch.Remove(keyWordEdid);
         }
     }
 }
