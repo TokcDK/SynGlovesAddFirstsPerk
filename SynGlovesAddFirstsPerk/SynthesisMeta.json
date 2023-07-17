@@ -1,9 +1,16 @@
 {
-    "Nickname": "",
-    "Visibility": "Visible",
-    "OneLineDescription": "Add missing fists perk to gloves by material",
-    "LongDescription": "Some heavy gloves have increasing damage by hand to hand hits.\nSome mod gloves can have missing the perk.\nThe patcher can add this perk when it missing\n\nNeed Weapon and Armor Fixes mod for additional fists perks to assign or it is possible to set custom perks in the patch settings",
-    "PreferredAutoVersioning": "Default",
-    "RequiredMods": [],
-    "TargetedReleases": []
+  "Nickname": "",
+  "Visibility": "Visible",
+  "OneLineDescription": "Add missing fists perk to gloves by material",
+  "LongDescription": "Some gloves have increasing damage by hand to hand hits.\nSome mod gloves can have missing the perk.\nThe patcher can add this perk to any gloves when it missing by theit material type.\n\nNeed Weapon and Armor Fixes mod for additional fists perks to assign or it is possible to set custom perks in the patch settings",
+  "PreferredAutoVersioning": "Default",
+  "RequiredMods": [],
+  "TargetedReleases": [
+    "SkyrimLE",
+    "SkyrimSE",
+    "SkyrimVR",
+    "EnderalLE",
+    "EnderalSE",
+    "SkyrimSEGog"
+  ]
 }
