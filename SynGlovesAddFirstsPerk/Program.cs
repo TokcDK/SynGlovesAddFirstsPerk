@@ -104,8 +104,7 @@ namespace SynGlovesAddFirstsPerk
             // get valid list
             var modMaterialFistsListResult = GetValidList(modMaterialFistsList);
 
-            HashSet<FormLink<IKeywordGetter>> fistsKeywords = new();
-            foreach (var d in modMaterialFistsListResult!) foreach (var v in d.Value) if (!fistsKeywords.Contains(v.FistsKeyword!)) fistsKeywords.Add(v.FistsKeyword!);
+            var fistsKeywords = GetFirstsKeywordsFormLinkList(modMaterialFistsListResult);
 
             int patchedCount = 0;
             foreach (var itemGetter in state.LoadOrder.PriorityOrder.Armor().WinningOverrides())
@@ -155,6 +154,17 @@ namespace SynGlovesAddFirstsPerk
             }
 
             Console.WriteLine($"Patched {patchedCount} records");
+        }
+
+        private static HashSet<FormLink<IKeywordGetter>> GetFirstsKeywordsFormLinkList(Dictionary<FormLink<IKeywordGetter>, List<MaterialFistsKeywordsData>>? modMaterialFistsListResult)
+        {
+            HashSet<FormLink<IKeywordGetter>> fistsKeywords = new();
+            foreach (var d in modMaterialFistsListResult!) 
+                foreach (var v in d.Value) 
+                    if (!fistsKeywords.Contains(v.FistsKeyword!)) 
+                        fistsKeywords.Add(v.FistsKeyword!);
+
+            return fistsKeywords;
         }
 
         private static Dictionary<FormLink<IKeywordGetter>, List<MaterialFistsKeywordsData>>? GetValidList(HashSet<MaterialFistsKeywordsData> modMaterialFistsList)
