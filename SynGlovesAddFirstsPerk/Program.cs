@@ -132,9 +132,11 @@ namespace SynGlovesAddFirstsPerk
                 {
                     if (string.IsNullOrWhiteSpace(itemGetter.EditorID)) continue;
 
-                    if (isMatSearch && MaterialKeywordsSearch.ContainsKey(itemGetter.EditorID))
+                    string keyWordEdid = itemGetter.EditorID.ToLower();
+
+                    if (isMatSearch && MaterialKeywordsSearch.ContainsKey(keyWordEdid))
                     {
-                        var list = MaterialKeywordsSearch[itemGetter.EditorID];
+                        var list = MaterialKeywordsSearch[keyWordEdid];
                         for (int i = 0; i < list.Count; i++)
                         {
                             var d = list[i];
@@ -146,11 +148,11 @@ namespace SynGlovesAddFirstsPerk
                         }
 
                         // remove empty list reference
-                        if (list.Count == 0) MaterialKeywordsSearch.Remove(itemGetter.EditorID);
+                        if (list.Count == 0) MaterialKeywordsSearch.Remove(keyWordEdid.ToLower());
                     }
-                    if (isFSearch && FistsKeywordsSearch.ContainsKey(itemGetter.EditorID))
+                    if (isFSearch && FistsKeywordsSearch.ContainsKey(keyWordEdid))
                     {
-                        var list = FistsKeywordsSearch[itemGetter.EditorID];
+                        var list = FistsKeywordsSearch[keyWordEdid];
                         for (int i = 0; i < list.Count; i++)
                         {
                             var d = list[i];
@@ -162,7 +164,7 @@ namespace SynGlovesAddFirstsPerk
                         }
 
                         // remove empty list reference
-                        if (list.Count == 0) FistsKeywordsSearch.Remove(itemGetter.EditorID);
+                        if (list.Count == 0) FistsKeywordsSearch.Remove(keyWordEdid);
                     }
                 }
             }

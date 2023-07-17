@@ -8,6 +8,8 @@ namespace SynGlovesAddFirstsPerk
         {
             if (string.IsNullOrWhiteSpace(key)) return;
 
+            key = key.ToLower();
+
             if (list.ContainsKey(key))
             {
                 list[key].Add(data);
