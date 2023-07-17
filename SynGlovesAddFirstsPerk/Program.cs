@@ -35,9 +35,11 @@ namespace SynGlovesAddFirstsPerk
             {
                 if (data.MaterialKeyword != null && data.MaterialKeyword.TryResolve(state.LinkCache, out var mKeywordGetter) && !string.IsNullOrWhiteSpace(mKeywordGetter.EditorID))
                 {
-                    if (materialKeywordsSearch.ContainsKey(mKeywordGetter.EditorID))
+                    string keyWordEdId = mKeywordGetter.EditorID.ToLowerInvariant();
+
+                    if (materialKeywordsSearch.ContainsKey(keyWordEdId))
                     {
-                        var list = materialKeywordsSearch[mKeywordGetter.EditorID];
+                        var list = materialKeywordsSearch[keyWordEdId];
                         foreach (var d in list)
                         {
                             if (d.MaterialKeyword != null) continue;
@@ -48,15 +50,17 @@ namespace SynGlovesAddFirstsPerk
                         }
 
                         // remove empty list reference
-                        if (list.Count == 0) materialKeywordsSearch.Remove(mKeywordGetter.EditorID);
+                        if (list.Count == 0) materialKeywordsSearch.Remove(keyWordEdId);
                     }
                 }
 
                 if (data.FistsKeyword != null && data.FistsKeyword.TryResolve(state.LinkCache, out var fKeywordGetter) && !string.IsNullOrWhiteSpace(fKeywordGetter.EditorID))
                 {
-                    if (fistsKeywordsSearch.ContainsKey(fKeywordGetter.EditorID))
+                    string keyWordEdId = fKeywordGetter.EditorID.ToLowerInvariant();
+
+                    if (fistsKeywordsSearch.ContainsKey(keyWordEdId))
                     {
-                        var list = fistsKeywordsSearch[fKeywordGetter.EditorID];
+                        var list = fistsKeywordsSearch[keyWordEdId];
                         foreach (var d in list)
                         {
                             if (d.MaterialKeyword != null) continue;
@@ -67,7 +71,7 @@ namespace SynGlovesAddFirstsPerk
                         }
 
                         // remove empty list reference
-                        if (list.Count == 0) fistsKeywordsSearch.Remove(fKeywordGetter.EditorID);
+                        if (list.Count == 0) fistsKeywordsSearch.Remove(keyWordEdId);
                     }
                 }
             }
