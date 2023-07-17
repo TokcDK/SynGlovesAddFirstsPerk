@@ -23,7 +23,8 @@ namespace SynGlovesAddFirstsPerk
             // fill data for keywords search
             var materialKeywordsSearch = new Dictionary<string, List<MaterialFistsKeywordsData>>();
             var fistsKeywordsSearch = new Dictionary<string, List<MaterialFistsKeywordsData>>();
-            HashSet<MaterialFistsKeywordsData>? modMaterialFistsList = new(Settings.Value.ModMaterialFists);
+
+            var modMaterialFistsList = new HashSet<MaterialFistsKeywordsData>(Settings.Value.ModMaterialFists);            
             foreach (var data in modMaterialFistsList)
             {
                 data.TryAddTo(materialKeywordsSearch, true);
@@ -39,73 +40,25 @@ namespace SynGlovesAddFirstsPerk
             }
 
             // search for mod specific
-            //foreach (var modGetter in state.LoadOrder)
-            //{
-            //    if (modGetter.Value == null) continue;
-            //    if (modGetter.Value.Mod == null) continue;
-
-            //    bool isSearchMaterial = ModSpecificMaterialKeywordsSearch.ContainsKey(modGetter.Value.ModKey);
-            //    bool isSearchFists = ModSpecificFistsKeywordsSearch.ContainsKey(modGetter.Value.ModKey);
-            //    if (isSearchMaterial || isSearchFists)
-            //    {
-            //        Dictionary<string, List<MaterialFistsKeywordsData>>? matList = isSearchMaterial ? ModSpecificMaterialKeywordsSearch[modGetter.Value.ModKey] : null;
-            //        Dictionary<string, List<MaterialFistsKeywordsData>>? fList = isSearchFists ? ModSpecificFistsKeywordsSearch[modGetter.Value.ModKey] : null;
-            //        foreach (var keyWordGetter in modGetter.Value.Mod.Keywords)
-            //        {
-            //            if (string.IsNullOrWhiteSpace(keyWordGetter.EditorID)) continue;
-
-            //            if (isSearchMaterial && matList!.ContainsKey(keyWordGetter.EditorID))
-            //            {
-            //                var list = matList[keyWordGetter.EditorID];
-            //                for (int i = 0; i < list.Count; i++)
-            //                {
-            //                    var d = list[i];
-            //                    if (d.MaterialKeyword != null) continue;
-
-            //                    // set value and remove reference from search list
-            //                    d.MaterialKeyword = keyWordGetter.FormKey;
-            //                    list.Remove(d);
-            //                }
-
-            //                // remove empty list reference
-            //                if (list.Count == 0) matList.Remove(keyWordGetter.EditorID);
-            //            }
-            //            if (isSearchFists && fList!.ContainsKey(keyWordGetter.EditorID))
-            //            {
-            //                var list = fList[keyWordGetter.EditorID];
-            //                for (int i = 0; i < list.Count; i++)
-            //                {
-            //                    var d = list[i];
-            //                    if (d.MaterialKeyword != null) continue;
-
-            //                    // set value and remove reference from search list
-            //                    d.MaterialKeyword = keyWordGetter.FormKey;
-            //                    list.Remove(d);
-            //                }
-
-            //                // remove empty list reference
-            //                if (list.Count == 0) fList.Remove(keyWordGetter.EditorID);
-            //            }
-            //        }
-            //    }
-            //}
+            SearchInSpecificMod();
 
             // search keywords in all
             bool isMatSearch = materialKeywordsSearch.Any(d => d.Value.Any(v => (v.MaterialKeyword == default || v.MaterialKeyword.IsNull)));
             bool isFSearch = fistsKeywordsSearch.Any(d => d.Value.Any(v => (v.FistsKeyword == null || v.FistsKeyword.IsNull)));
 
-            if (isMatSearch || isFSearch)
-            {
-                SearchKeywordsByEdId(state.LoadOrder.PriorityOrder
+            if (isMatSearch || isFSearch) SearchKeywordsByEdId(state.LoadOrder.PriorityOrder
                     , isMatSearch, materialKeywordsSearch
                     , isFSearch, fistsKeywordsSearch);
-            }
 
-            // get valid list
-            var modMaterialFistsListResult = GetValidList(modMaterialFistsList);
+            var modMaterialFistsListResult = GetMaterialFistsDataValidList(modMaterialFistsList);
 
-            var fistsKeywords = GetFirstsKeywordsFormLinkList(modMaterialFistsListResult);
+            SearchGlovesWhereNeedToAddKeyword(modMaterialFistsListResult
+                , GetFirstsKeywordsFormLinkList(modMaterialFistsListResult)
+                , state);
+        }
 
+        private static void SearchGlovesWhereNeedToAddKeyword(Dictionary<FormLink<IKeywordGetter>, List<MaterialFistsKeywordsData>>? modMaterialFistsListResult, HashSet<FormLink<IKeywordGetter>> fistsKeywords, IPatcherState<ISkyrimMod, ISkyrimModGetter> state)
+        {
             int patchedCount = 0;
             foreach (var itemGetter in state.LoadOrder.PriorityOrder.Armor().WinningOverrides())
             {
@@ -156,6 +109,60 @@ namespace SynGlovesAddFirstsPerk
             Console.WriteLine($"Patched {patchedCount} records");
         }
 
+        private static void SearchInSpecificMod()
+        {
+            //foreach (var modGetter in state.LoadOrder)
+            //{
+            //    if (modGetter.Value == null) continue;
+            //    if (modGetter.Value.Mod == null) continue;
+
+            //    bool isSearchMaterial = ModSpecificMaterialKeywordsSearch.ContainsKey(modGetter.Value.ModKey);
+            //    bool isSearchFists = ModSpecificFistsKeywordsSearch.ContainsKey(modGetter.Value.ModKey);
+            //    if (isSearchMaterial || isSearchFists)
+            //    {
+            //        Dictionary<string, List<MaterialFistsKeywordsData>>? matList = isSearchMaterial ? ModSpecificMaterialKeywordsSearch[modGetter.Value.ModKey] : null;
+            //        Dictionary<string, List<MaterialFistsKeywordsData>>? fList = isSearchFists ? ModSpecificFistsKeywordsSearch[modGetter.Value.ModKey] : null;
+            //        foreach (var keyWordGetter in modGetter.Value.Mod.Keywords)
+            //        {
+            //            if (string.IsNullOrWhiteSpace(keyWordGetter.EditorID)) continue;
+
+            //            if (isSearchMaterial && matList!.ContainsKey(keyWordGetter.EditorID))
+            //            {
+            //                var list = matList[keyWordGetter.EditorID];
+            //                for (int i = 0; i < list.Count; i++)
+            //                {
+            //                    var d = list[i];
+            //                    if (d.MaterialKeyword != null) continue;
+
+            //                    // set value and remove reference from search list
+            //                    d.MaterialKeyword = keyWordGetter.FormKey;
+            //                    list.Remove(d);
+            //                }
+
+            //                // remove empty list reference
+            //                if (list.Count == 0) matList.Remove(keyWordGetter.EditorID);
+            //            }
+            //            if (isSearchFists && fList!.ContainsKey(keyWordGetter.EditorID))
+            //            {
+            //                var list = fList[keyWordGetter.EditorID];
+            //                for (int i = 0; i < list.Count; i++)
+            //                {
+            //                    var d = list[i];
+            //                    if (d.MaterialKeyword != null) continue;
+
+            //                    // set value and remove reference from search list
+            //                    d.MaterialKeyword = keyWordGetter.FormKey;
+            //                    list.Remove(d);
+            //                }
+
+            //                // remove empty list reference
+            //                if (list.Count == 0) fList.Remove(keyWordGetter.EditorID);
+            //            }
+            //        }
+            //    }
+            //}
+        }
+
         private static HashSet<FormLink<IKeywordGetter>> GetFirstsKeywordsFormLinkList(Dictionary<FormLink<IKeywordGetter>, List<MaterialFistsKeywordsData>>? modMaterialFistsListResult)
         {
             HashSet<FormLink<IKeywordGetter>> fistsKeywords = new();
@@ -167,7 +174,7 @@ namespace SynGlovesAddFirstsPerk
             return fistsKeywords;
         }
 
-        private static Dictionary<FormLink<IKeywordGetter>, List<MaterialFistsKeywordsData>>? GetValidList(HashSet<MaterialFistsKeywordsData> modMaterialFistsList)
+        private static Dictionary<FormLink<IKeywordGetter>, List<MaterialFistsKeywordsData>>? GetMaterialFistsDataValidList(HashSet<MaterialFistsKeywordsData> modMaterialFistsList)
         {
             Dictionary<FormLink<IKeywordGetter>, List<MaterialFistsKeywordsData>>? modMaterialFistsListResult = new();
             foreach (var data in modMaterialFistsList)
