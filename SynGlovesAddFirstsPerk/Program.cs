@@ -33,48 +33,11 @@ namespace SynGlovesAddFirstsPerk
             // search in settings keywords
             foreach (var data in modMaterialFistsList)
             {
-                if (data.MaterialKeyword != null && data.MaterialKeyword.TryResolve(state.LinkCache, out var mKeywordGetter) && !string.IsNullOrWhiteSpace(mKeywordGetter.EditorID))
-                {
-                    string keyWordEdId = mKeywordGetter.EditorID.ToLowerInvariant();
+                SearchKeyWordsInSettings(state.LinkCache, materialKeywordsSearch, data.MaterialKeyword);
 
-                    if (materialKeywordsSearch.ContainsKey(keyWordEdId))
-                    {
-                        var list = materialKeywordsSearch[keyWordEdId];
-                        foreach (var d in list)
-                        {
-                            if (d.MaterialKeyword != null) continue;
-
-                            // set value and remove reference from search list
-                            d.MaterialKeyword = data.MaterialKeyword;
-                            list.Remove(d);
-                        }
-
-                        // remove empty list reference
-                        if (list.Count == 0) materialKeywordsSearch.Remove(keyWordEdId);
-                    }
-                }
-
-                if (data.FistsKeyword != null && data.FistsKeyword.TryResolve(state.LinkCache, out var fKeywordGetter) && !string.IsNullOrWhiteSpace(fKeywordGetter.EditorID))
-                {
-                    string keyWordEdId = fKeywordGetter.EditorID.ToLowerInvariant();
-
-                    if (fistsKeywordsSearch.ContainsKey(keyWordEdId))
-                    {
-                        var list = fistsKeywordsSearch[keyWordEdId];
-                        foreach (var d in list)
-                        {
-                            if (d.MaterialKeyword != null) continue;
-
-                            // set value and remove reference from search list
-                            d.MaterialKeyword = data.MaterialKeyword;
-                            list.Remove(d);
-                        }
-
-                        // remove empty list reference
-                        if (list.Count == 0) fistsKeywordsSearch.Remove(keyWordEdId);
-                    }
-                }
+                SearchKeyWordsInSettings(state.LinkCache, fistsKeywordsSearch, data.FistsKeyword);
             }
+
             // search for mod specific
             //foreach (var modGetter in state.LoadOrder)
             //{
@@ -208,6 +171,30 @@ namespace SynGlovesAddFirstsPerk
             }
 
             Console.WriteLine($"Patched {patchedCount} records");
+        }
+
+        private static void SearchKeyWordsInSettings(Mutagen.Bethesda.Plugins.Cache.ILinkCache<ISkyrimMod, ISkyrimModGetter> linkCache, Dictionary<string, List<MaterialFistsKeywordsData>> keywordsToSearch, FormLink<IKeywordGetter>? keywordFormLink)
+        {
+            if (keywordFormLink != null && keywordFormLink.TryResolve(linkCache, out var mKeywordGetter) && !string.IsNullOrWhiteSpace(mKeywordGetter.EditorID))
+            {
+                string keyWordEdId = mKeywordGetter.EditorID.ToLowerInvariant();
+
+                if (keywordsToSearch.ContainsKey(keyWordEdId))
+                {
+                    var list = keywordsToSearch[keyWordEdId];
+                    foreach (var d in list)
+                    {
+                        if (d.MaterialKeyword != null) continue;
+
+                        // set value and remove reference from search list
+                        d.MaterialKeyword = keywordFormLink;
+                        list.Remove(d);
+                    }
+
+                    // remove empty list reference
+                    if (list.Count == 0) keywordsToSearch.Remove(keyWordEdId);
+                }
+            }
         }
 
         private static void SearchKeywordsByEdId(IEnumerable<Mutagen.Bethesda.Plugins.Order.IModListing<ISkyrimModGetter>> priorityOrder, bool isMatSearch, Dictionary<string, List<MaterialFistsKeywordsData>> materialKeywordsSearch, bool isFSearch, Dictionary<string, List<MaterialFistsKeywordsData>> fistsKeywordsSearch)
