@@ -16,8 +16,14 @@ namespace SynGlovesAddFirstsPerk
         }
         internal static void TryAddTo(this MaterialFistsKeywordsData data, Dictionary<string, List<MaterialFistsKeywordsData>> list, bool isMaterial)
         {
-            if (isMaterial && data.MaterialKeyword == null) list.TryAdd(data, data.MaterialKeywordEdidOptional!);
-            if (!isMaterial && data.FistsKeyword == null) list.TryAdd(data, data.FistsKeywordEdidOptional!);
+            if (isMaterial && (data.MaterialKeyword == default || data.MaterialKeyword.IsNull))
+            {
+                list.TryAdd(data, data.MaterialKeywordEdidOptional!);
+            }                
+            else if (!isMaterial && (data.FistsKeyword == default || data.FistsKeyword.IsNull))
+            {
+                list.TryAdd(data, data.FistsKeywordEdidOptional!);
+            }
         }
     }
 }
